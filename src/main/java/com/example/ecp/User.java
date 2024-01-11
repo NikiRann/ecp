@@ -1,19 +1,17 @@
 package com.example.ecp;
 
-import java.util.Set;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
 
 @Entity
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
+    @Column(nullable = false)
     private String name;
     @Column(nullable = false, unique = true)
     private String username;
@@ -21,8 +19,8 @@ public class User {
     private String email;
     @Column(nullable = false)
     private String password;
-    @ManyToMany
-    private Set<Role> roles;
+    @Column(nullable = false)
+    private String role;
 
     public Integer getId() {
         return id;
@@ -54,10 +52,10 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-    public Set<Role> getRoles() {
-        return roles;
+    public String getRole() {
+        return role;
     }
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setRole(String role) {
+        this.role = role;
     }
 }

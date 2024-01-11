@@ -1,4 +1,5 @@
 package com.example.ecp;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +16,13 @@ public class UserDetail implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepo.findByUsernameOrEmail(username, username).orElse(null);
-        if(user==null){
+        if(user == null){
             new UsernameNotFoundException("User not exists by Username");
         }
-        Set<GrantedAuthority> authorities = user.getRoles().stream()
-                .map((role) -> new SimpleGrantedAuthority(role.getName()))
-                .collect(Collectors.toSet());
+        
+        Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();   
+        authorities.add(new SimpleGrantedAuthority(user.getRole()));
+
         return new org.springframework.security.core.userdetails.User(username,user.getPassword(),authorities);
     }
 }
